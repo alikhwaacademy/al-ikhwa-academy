@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة الأدمن - أكاديمية الإخوة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+        body{min-height:100vh;background:#0f172a;color:white;}
+        .login-screen{display:flex;position:fixed;inset:0;background:linear-gradient(135deg,#0f172a,#1e293b,#0f2557);justify-content:center;align-items:center;z-index:1000;}
+        .login-card{background:rgba(255,255,255,0.06);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.1);border-radius:25px;padding:50px 40px;width:90%;max-width:400px;text-align:center;}
+        .login-card h1{font-size:1.8rem;margin-bottom:8px;}
+        .login-card p{color:#64748b;margin-bottom:30px;font-size:0.9rem;}
+        nav{padding:15px 40px;display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,0.08);}
+        .logo{font-size:1.1rem;font-weight:700;}
+        .logo span{color:#a855f7;}
+        .admin-badge{background:rgba(168,85,247,0.15);border:1px solid rgba(168,85,247,0.3);color:#d8b4fe;padding:6px 15px;border-radius:50px;font-size:0.85rem;font-weight:600;}
+        .logout-btn{background:rgba(239,68,68,0.15);border:1px solid rgba(239,68,68,0.3);color:#fca5a5;padding:7px 18px;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.85rem;transition:0.3s;}
+        .logout-btn:hover{background:rgba(239,68,68,0.3);}
+        .inner-nav{display:flex;gap:5px;padding:12px 40px;background:rgba(255,255,255,0.02);border-bottom:1px solid rgba(255,255,255,0.06);flex-wrap:wrap;}
+        .inner-nav-btn{padding:8px 18px;border-radius:50px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:#64748b;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.88rem;transition:0.3s;}
+        .inner-nav-btn:hover{background:rgba(255,255,255,0.06);color:white;}
+        .inner-nav-btn.active{background:linear-gradient(135deg,#7c3aed,#a855f7);border-color:transparent;color:white;}
+        .page{display:none;}
+        .page.active{display:block;}
+        .home-hero{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(168,85,247,0.05));border-bottom:1px solid rgba(124,58,237,0.15);padding:40px;}
+        .welcome-text{font-size:1.6rem;font-weight:900;margin-bottom:6px;background:linear-gradient(135deg,#fff,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .welcome-sub{color:#64748b;font-size:0.9rem;margin-bottom:25px;}
+        .stats-row{display:flex;gap:15px;flex-wrap:wrap;}
+        .stat-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:20px 25px;flex:1;min-width:130px;text-align:center;transition:0.3s;cursor:pointer;}
+        .stat-card:hover{background:rgba(255,255,255,0.09);transform:translateY(-3px);}
+        .stat-card .icon{font-size:2rem;margin-bottom:8px;}
+        .stat-card .number{font-size:1.8rem;font-weight:900;color:#a855f7;}
+        .stat-card .label{font-size:0.82rem;color:#64748b;margin-top:3px;}
+        .container{padding:30px 40px;}
+        .section{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:25px;margin-bottom:20px;}
+        .section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+        .section-title{display:flex;align-items:center;gap:10px;}
+        .section-icon{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,#7c3aed,#a855f7);display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+        .section-title h2{font-size:1.1rem;font-weight:700;color:white;}
+        .input-field{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.05);color:white;font-size:1rem;font-family:'Cairo',sans-serif;margin-bottom:12px;outline:none;transition:0.3s;}
+        .input-field::placeholder{color:#475569;}
+        .input-field:focus{border-color:#a855f7;}
+        select.input-field option{background:#1e293b;}
+        .btn-submit{width:100%;padding:13px;border-radius:50px;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;font-size:1rem;font-weight:bold;font-family:'Cairo',sans-serif;border:none;cursor:pointer;transition:0.3s;}
+        .btn-submit:hover{transform:translateY(-2px);}
+        .btn-delete{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);padding:6px 15px;border-radius:20px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.82rem;transition:0.3s;}
+        .btn-delete:hover{background:rgba(239,68,68,0.3);}
+        .tabs{display:flex;gap:8px;margin-bottom:20px;background:rgba(255,255,255,0.03);padding:5px;border-radius:50px;border:1px solid rgba(255,255,255,0.07);width:fit-content;flex-wrap:wrap;}
+        .tab-btn{padding:8px 20px;border-radius:50px;border:none;background:transparent;color:#64748b;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.9rem;transition:0.3s;}
+        .tab-btn.active{background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;}
+        .tab-content{display:none;}
+        .tab-content.active{display:block;}
+        .item-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:15px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;transition:0.3s;}
+        .item-card:hover{background:rgba(255,255,255,0.07);}
+        .item-card h3{font-size:0.95rem;font-weight:700;margin-bottom:3px;}
+        .item-card p{font-size:0.82rem;color:#64748b;}
+        .person-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:20px 25px;margin-bottom:15px;transition:0.3s;}
+        .person-card:hover{background:rgba(255,255,255,0.07);}
+        .person-card-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
+        .person-card h3{font-size:1.05rem;font-weight:700;margin-bottom:5px;}
+        .person-info{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:6px;margin-bottom:10px;}
+        .person-info p{font-size:0.85rem;color:#64748b;}
+        .person-info p span{color:#dbeafe;}
+        .badge-sub-yes{background:rgba(34,197,94,0.15);color:#86efac;border:1px solid rgba(34,197,94,0.2);padding:4px 12px;border-radius:20px;font-size:0.8rem;display:inline-block;}
+        .badge-sub-no{background:rgba(239,68,68,0.15);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);padding:4px 12px;border-radius:20px;font-size:0.8rem;display:inline-block;}
+        .teacher-specialty{background:rgba(124,58,237,0.15);color:#d8b4fe;border:1px solid rgba(124,58,237,0.2);padding:4px 12px;border-radius:20px;font-size:0.8rem;display:inline-block;}
+        .group-info{background:rgba(56,189,248,0.06);border:1px solid rgba(56,189,248,0.15);border-radius:12px;padding:12px 15px;margin-top:10px;}
+        .group-info h4{font-size:0.85rem;color:#38bdf8;margin-bottom:6px;}
+        .lesson-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:15px 20px;margin-bottom:12px;}
+        .lesson-card h3{font-size:0.95rem;font-weight:700;margin-bottom:5px;}
+        .lesson-card p{font-size:0.82rem;color:#64748b;margin-bottom:3px;}
+        .badge{display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.8rem;margin-top:5px;}
+        .badge-done{background:rgba(34,197,94,0.15);color:#86efac;}
+        .badge-upcoming{background:rgba(37,99,235,0.15);color:#93c5fd;}
+        .content-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:15px;}
+        .content-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;overflow:hidden;transition:0.3s;}
+        .content-card:hover{transform:translateY(-3px);}
+        .content-card iframe{width:100%;height:160px;border:none;}
+        .content-card-body{padding:15px;}
+        .content-card-body h3{font-size:0.95rem;margin-bottom:5px;font-weight:700;}
+        .content-card-body p{font-size:0.8rem;color:#64748b;margin-bottom:8px;}
+        .content-level{display:inline-block;background:rgba(124,58,237,0.15);color:#d8b4fe;padding:2px 10px;border-radius:20px;font-size:0.75rem;margin-bottom:8px;}
+        .btn-view{display:inline-block;background:linear-gradient(135deg,#7c3aed,#a855f7);color:white;padding:7px 18px;border-radius:50px;text-decoration:none;font-size:0.85rem;font-weight:bold;transition:0.3s;}
+        .empty-msg{text-align:center;color:#475569;padding:40px 20px;}
+        .empty-msg .empty-icon{font-size:3rem;margin-bottom:10px;}
+        .msg{padding:10px 15px;border-radius:12px;margin-bottom:12px;font-size:0.9rem;display:none;}
+        .msg.error{background:rgba(239,68,68,0.1);color:#fca5a5;display:block;border:1px solid rgba(239,68,68,0.2);}
+        .msg.success{background:rgba(34,197,94,0.1);color:#86efac;display:block;border:1px solid rgba(34,197,94,0.2);}
+        .notif-time{font-size:0.75rem;color:#475569;margin-top:5px;}
+        /* التقارير */
+        .report-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;margin-bottom:25px;}
+        .report-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:18px;padding:22px;text-align:center;transition:0.3s;}
+        .report-card:hover{background:rgba(255,255,255,0.08);transform:translateY(-3px);}
+        .report-card .r-icon{font-size:2.2rem;margin-bottom:10px;}
+        .report-card .r-number{font-size:2rem;font-weight:900;color:#a855f7;}
+        .report-card .r-label{font-size:0.82rem;color:#64748b;margin-top:4px;}
+        .report-card .r-sub{font-size:0.78rem;color:#475569;margin-top:3px;}
+        .chart-bar-container{margin-bottom:15px;}
+        .chart-bar-label{display:flex;justify-content:space-between;font-size:0.85rem;margin-bottom:5px;}
+        .chart-bar-label span:first-child{color:#94a3b8;}
+        .chart-bar-label span:last-child{color:#a855f7;font-weight:700;}
+        .chart-bar-track{background:rgba(255,255,255,0.06);border-radius:50px;height:10px;overflow:hidden;}
+        .chart-bar-fill{height:100%;border-radius:50px;background:linear-gradient(135deg,#7c3aed,#a855f7);transition:width 0.8s ease;}
+        .top-item{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px 18px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center;}
+        .top-item h4{font-size:0.9rem;font-weight:700;margin-bottom:3px;}
+        .top-item p{font-size:0.8rem;color:#64748b;}
+        .top-rank{font-size:1.2rem;font-weight:900;color:#a855f7;min-width:30px;}
+        .country-flag{font-size:1.1rem;margin-left:8px;}
+        .report-divider{border:none;border-top:1px solid rgba(255,255,255,0.07);margin:20px 0;}
+
+        /* الاختبارات */
+        .quiz-question-row{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:18px;margin-bottom:12px;}
+        .quiz-question-row h4{font-size:0.95rem;font-weight:700;margin-bottom:10px;color:#d8b4fe;}
+        .quiz-option-row{display:flex;gap:8px;margin-bottom:8px;align-items:center;}
+        .quiz-option-row input{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:10px 14px;color:white;font-family:'Cairo',sans-serif;flex:1;outline:none;font-size:0.9rem;}
+        .quiz-option-row input::placeholder{color:#475569;}
+        .quiz-option-row input:focus{border-color:#a855f7;}
+        .btn-correct{padding:7px 14px;border-radius:20px;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.82rem;transition:0.3s;white-space:nowrap;}
+        .btn-correct.selected{background:rgba(34,197,94,0.25);color:#86efac;border:1px solid rgba(34,197,94,0.4);}
+        .btn-correct.unselected{background:rgba(255,255,255,0.05);color:#64748b;border:1px solid rgba(255,255,255,0.1);}
+        .btn-correct.unselected:hover{background:rgba(255,255,255,0.1);color:white;}
+        .btn-add-q{background:rgba(124,58,237,0.15);color:#d8b4fe;border:1px solid rgba(124,58,237,0.2);padding:10px 22px;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.9rem;transition:0.3s;}
+        .btn-add-q:hover{background:rgba(124,58,237,0.3);}
+        .btn-del-q{background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.2);padding:6px 14px;border-radius:20px;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.82rem;transition:0.3s;margin-top:8px;}
+        .btn-del-q:hover{background:rgba(239,68,68,0.25);}
+        .quiz-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:18px 20px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;}
+        .quiz-card h3{font-size:0.95rem;font-weight:700;margin-bottom:3px;}
+        .quiz-card p{font-size:0.82rem;color:#64748b;}
+        .result-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:15px;padding:15px 20px;margin-bottom:10px;}
+        .result-card h3{font-size:0.95rem;font-weight:700;margin-bottom:5px;}
+        .result-card p{font-size:0.82rem;color:#64748b;margin-bottom:3px;}
+    </style>
+</head>
+<body>
+
+<div class="login-screen" id="loginScreen">
+    <div class="login-card">
+        <h1>🔐 لوحة الأدمن</h1>
+        <p>أكاديمية الإخوة - لوحة الإدارة</p>
+        <div id="loginMsg" class="msg"></div>
+        <input type="password" class="input-field" placeholder="كلمة السر" id="adminPass">
+        <button class="btn-submit" onclick="adminLogin()">دخول</button>
+    </div>
+</div>
+
+<div id="dashboard" style="display:none">
+
+<nav>
+    <div class="logo">⚙️ أكاديمية <span>الإخوة</span> - الأدمن</div>
+    <div style="display:flex;align-items:center;gap:12px;">
+        <span class="admin-badge">👑 أدمن</span>
+        <button class="logout-btn" onclick="adminLogout()">🚪 خروج</button>
+    </div>
+</nav>
+
+<div class="inner-nav">
+    <button class="inner-nav-btn active" id="nav-home" onclick="showPage('home',this)">🏠 الرئيسية</button>
+    <button class="inner-nav-btn" id="nav-students" onclick="showPage('students',this)">🎒 الطلاب</button>
+    <button class="inner-nav-btn" id="nav-teachers" onclick="showPage('teachers',this)">🎓 المعلمين</button>
+    <button class="inner-nav-btn" id="nav-groups" onclick="showPage('groups',this)">👥 المجموعات</button>
+    <button class="inner-nav-btn" id="nav-lessons" onclick="showPage('lessons',this)">📋 الحصص</button>
+    <button class="inner-nav-btn" id="nav-content" onclick="showPage('content',this)">📖 المحتوى</button>
+    <button class="inner-nav-btn" id="nav-quizzes" onclick="showPage('quizzes',this)">📝 الاختبارات</button>
+    <button class="inner-nav-btn" id="nav-notifications" onclick="showPage('notifications',this)">🔔 الإشعارات</button>
+    <button class="inner-nav-btn" id="nav-messages" onclick="showPage('messages',this)">💬 الرسائل</button>
+    <button class="inner-nav-btn" id="nav-reports" onclick="showPage('reports',this)">📊 التقارير</button>
+</div>
+
+<!-- HOME -->
+<div class="page active" id="page-home">
+    <div class="home-hero">
+        <div class="welcome-text">👑 أهلاً بالأدمن</div>
+        <div class="welcome-sub">لوحة إدارة أكاديمية الإخوة لتعليم اللغة العربية والقرآن الكريم</div>
+        <div class="stats-row">
+            <div class="stat-card" onclick="showPage('students',document.getElementById('nav-students'))">
+                <div class="icon">🎒</div><div class="number" id="totalStudents">0</div><div class="label">الطلاب</div>
+            </div>
+            <div class="stat-card" onclick="showPage('teachers',document.getElementById('nav-teachers'))">
+                <div class="icon">🎓</div><div class="number" id="totalTeachers">0</div><div class="label">المعلمين</div>
+            </div>
+            <div class="stat-card" onclick="showPage('lessons',document.getElementById('nav-lessons'))">
+                <div class="icon">📋</div><div class="number" id="totalLessons">0</div><div class="label">الحصص</div>
+            </div>
+            <div class="stat-card" onclick="showPage('groups',document.getElementById('nav-groups'))">
+                <div class="icon">👥</div><div class="number" id="totalGroups">0</div><div class="label">مجموعات</div>
+            </div>
+            <div class="stat-card" onclick="showPage('quizzes',document.getElementById('nav-quizzes'))">
+                <div class="icon">📝</div><div class="number" id="totalQuizzes">0</div><div class="label">اختبارات</div>
+            </div>
+            <div class="stat-card">
+                <div class="icon">🏆</div><div class="number" id="totalResults">0</div><div class="label">نتائج</div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">➕</div><h2>إضافة محتوى سريع</h2></div></div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('addVideo',this)">🎬 فيديو</button>
+                <button class="tab-btn" onclick="switchTab('addAudio',this)">🎵 صوتية</button>
+                <button class="tab-btn" onclick="switchTab('addBook',this)">📚 كتاب</button>
+            </div>
+            <div class="tab-content active" id="tab-addVideo">
+                <div id="videoMsg" class="msg"></div>
+                <input type="text" class="input-field" placeholder="عنوان الفيديو" id="videoTitle">
+                <input type="text" class="input-field" placeholder="رابط YouTube" id="videoUrl">
+                <input type="text" class="input-field" placeholder="الوصف (اختياري)" id="videoDesc">
+                <select class="input-field" id="videoLevel"><option value="1">المستوى الأول</option><option value="2">المستوى الثاني</option><option value="3">المستوى الثالث</option></select>
+                <button class="btn-submit" onclick="addVideo()">+ إضافة الفيديو</button>
+            </div>
+            <div class="tab-content" id="tab-addAudio">
+                <div id="audioMsg" class="msg"></div>
+                <input type="text" class="input-field" placeholder="عنوان الصوتية" id="audioTitle">
+                <input type="text" class="input-field" placeholder="رابط الصوتية" id="audioUrl">
+                <input type="text" class="input-field" placeholder="الوصف (اختياري)" id="audioDesc">
+                <select class="input-field" id="audioLevel"><option value="1">المستوى الأول</option><option value="2">المستوى الثاني</option><option value="3">المستوى الثالث</option></select>
+                <button class="btn-submit" onclick="addAudio()">+ إضافة الصوتية</button>
+            </div>
+            <div class="tab-content" id="tab-addBook">
+                <div id="bookMsg" class="msg"></div>
+                <input type="text" class="input-field" placeholder="عنوان الكتاب" id="bookTitle">
+                <input type="text" class="input-field" placeholder="رابط الكتاب PDF" id="bookUrl">
+                <input type="text" class="input-field" placeholder="الوصف (اختياري)" id="bookDesc">
+                <select class="input-field" id="bookLevel"><option value="1">المستوى الأول</option><option value="2">المستوى الثاني</option><option value="3">المستوى الثالث</option></select>
+                <button class="btn-submit" onclick="addBook()">+ إضافة الكتاب</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- STUDENTS -->
+<div class="page" id="page-students">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🎒</div><h2>قائمة الطلاب</h2></div></div>
+            <div id="studentsList"><div class="empty-msg"><div class="empty-icon">🎒</div><p>لا يوجد طلاب بعد</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- TEACHERS -->
+<div class="page" id="page-teachers">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🎓</div><h2>قائمة المعلمين</h2></div></div>
+            <div id="teachersList"><div class="empty-msg"><div class="empty-icon">🎓</div><p>لا يوجد معلمين بعد</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- GROUPS -->
+<div class="page" id="page-groups">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">👥</div><h2>مجموعات المعلمين وطلابهم</h2></div></div>
+            <div id="groupsList"><div class="empty-msg"><div class="empty-icon">👥</div><p>لا توجد مجموعات بعد</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- LESSONS -->
+<div class="page" id="page-lessons">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">📋</div><h2>كل الحصص</h2></div></div>
+            <div id="allLessonsList"><div class="empty-msg"><div class="empty-icon">📋</div><p>لا توجد حصص بعد</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- CONTENT -->
+<div class="page" id="page-content">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">📖</div><h2>المحتوى التعليمي</h2></div></div>
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('videos',this)">🎬 فيديوهات</button>
+                <button class="tab-btn" onclick="switchTab('audios',this)">🎵 صوتيات</button>
+                <button class="tab-btn" onclick="switchTab('books',this)">📚 كتب</button>
+            </div>
+            <div class="tab-content active" id="tab-videos"><div class="content-grid" id="videosList"><div class="empty-msg"><div class="empty-icon">🎬</div><p>لا توجد فيديوهات</p></div></div></div>
+            <div class="tab-content" id="tab-audios"><div id="audiosList"><div class="empty-msg"><div class="empty-icon">🎵</div><p>لا توجد صوتيات</p></div></div></div>
+            <div class="tab-content" id="tab-books"><div id="booksList"><div class="empty-msg"><div class="empty-icon">📚</div><p>لا توجد كتب</p></div></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- QUIZZES -->
+<div class="page" id="page-quizzes">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">📝</div><h2>إضافة اختبار جديد</h2></div></div>
+            <div id="quizMsg" class="msg"></div>
+            <input type="text" class="input-field" placeholder="عنوان الاختبار" id="quizTitle">
+            <input type="text" class="input-field" placeholder="وصف الاختبار (اختياري)" id="quizDesc">
+            <select class="input-field" id="quizLevel">
+                <option value="1">المستوى الأول</option>
+                <option value="2">المستوى الثاني</option>
+                <option value="3">المستوى الثالث</option>
+            </select>
+            <div id="questionsContainer"></div>
+            <button class="btn-add-q" onclick="addQuestionField()">+ إضافة سؤال</button>
+            <br><br>
+            <button class="btn-submit" onclick="saveQuiz()">💾 حفظ الاختبار</button>
+        </div>
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">📋</div><h2>الاختبارات المضافة</h2></div></div>
+            <div id="quizzesList"><div class="empty-msg"><div class="empty-icon">📝</div><p>لا توجد اختبارات بعد</p></div></div>
+        </div>
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🏆</div><h2>نتائج الطلاب</h2></div></div>
+            <div id="quizResultsList"><div class="empty-msg"><div class="empty-icon">🏆</div><p>لا توجد نتائج بعد</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- NOTIFICATIONS -->
+<div class="page" id="page-notifications">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🔔</div><h2>كل الإشعارات المرسلة</h2></div></div>
+            <div id="allNotifsList"><div class="empty-msg"><div class="empty-icon">🔔</div><p>لا توجد إشعارات</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- MESSAGES -->
+<div class="page" id="page-messages">
+    <div class="container">
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">💬</div><h2>كل الرسائل</h2></div></div>
+            <div id="allMsgsList"><div class="empty-msg"><div class="empty-icon">💬</div><p>لا توجد رسائل</p></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- REPORTS -->
+<div class="page" id="page-reports">
+    <div class="container">
+
+        <!-- إحصائيات عامة -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">📊</div><h2>إحصائيات عامة</h2></div></div>
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="r-icon">🎒</div>
+                    <div class="r-number" id="rep-students">0</div>
+                    <div class="r-label">إجمالي الطلاب</div>
+                    <div class="r-sub" id="rep-students-sub">0 مشترك</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">🎓</div>
+                    <div class="r-number" id="rep-teachers">0</div>
+                    <div class="r-label">إجمالي المعلمين</div>
+                    <div class="r-sub" id="rep-teachers-sub">0 تخصص</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">📋</div>
+                    <div class="r-number" id="rep-lessons">0</div>
+                    <div class="r-label">إجمالي الحصص</div>
+                    <div class="r-sub" id="rep-lessons-sub">0 مكتملة</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">👥</div>
+                    <div class="r-number" id="rep-groups">0</div>
+                    <div class="r-label">مجموعات نشطة</div>
+                    <div class="r-sub" id="rep-groups-sub">متوسط 0 طالب/معلم</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">📝</div>
+                    <div class="r-number" id="rep-quizzes">0</div>
+                    <div class="r-label">اختبارات</div>
+                    <div class="r-sub" id="rep-quizzes-sub">0 نتيجة</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">⭐</div>
+                    <div class="r-number" id="rep-ratings">0</div>
+                    <div class="r-label">تقييمات</div>
+                    <div class="r-sub" id="rep-ratings-sub">متوسط 0/5</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- نسب الاشتراك -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">💳</div><h2>نسب الاشتراك</h2></div></div>
+            <div class="chart-bar-container">
+                <div class="chart-bar-label"><span>الطلاب المشتركون</span><span id="bar-subscribed-pct">0%</span></div>
+                <div class="chart-bar-track"><div class="chart-bar-fill" id="bar-subscribed" style="width:0%"></div></div>
+            </div>
+            <div class="chart-bar-container">
+                <div class="chart-bar-label"><span>الطلاب غير المشتركين</span><span id="bar-unsubscribed-pct">0%</span></div>
+                <div class="chart-bar-track"><div class="chart-bar-fill" id="bar-unsubscribed" style="width:0%;background:linear-gradient(135deg,#dc2626,#ef4444)"></div></div>
+            </div>
+        </div>
+
+        <!-- ماذا يدرس الطلاب -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">📚</div><h2>تخصصات الطلاب</h2></div></div>
+            <div class="chart-bar-container">
+                <div class="chart-bar-label"><span>🕌 القرآن الكريم</span><span id="bar-quran-pct">0%</span></div>
+                <div class="chart-bar-track"><div class="chart-bar-fill" id="bar-quran" style="width:0%;background:linear-gradient(135deg,#0369a1,#0ea5e9)"></div></div>
+            </div>
+            <div class="chart-bar-container">
+                <div class="chart-bar-label"><span>📖 اللغة العربية</span><span id="bar-arabic-pct">0%</span></div>
+                <div class="chart-bar-track"><div class="chart-bar-fill" id="bar-arabic" style="width:0%;background:linear-gradient(135deg,#047857,#10b981)"></div></div>
+            </div>
+            <div class="chart-bar-container">
+                <div class="chart-bar-label"><span>✨ كلاهما</span><span id="bar-both-pct">0%</span></div>
+                <div class="chart-bar-track"><div class="chart-bar-fill" id="bar-both" style="width:0%;background:linear-gradient(135deg,#b45309,#f59e0b)"></div></div>
+            </div>
+        </div>
+
+        <!-- أفضل المعلمين -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🏆</div><h2>أكثر المعلمين نشاطاً</h2></div></div>
+            <div id="top-teachers-list"><div class="empty-msg"><div class="empty-icon">🎓</div><p>لا يوجد بيانات</p></div></div>
+        </div>
+
+        <!-- توزيع الطلاب حسب البلد -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🌍</div><h2>توزيع الطلاب حسب البلد</h2></div></div>
+            <div id="countries-list"><div class="empty-msg"><div class="empty-icon">🌍</div><p>لا يوجد بيانات</p></div></div>
+        </div>
+
+        <!-- أفضل نتائج الاختبارات -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🥇</div><h2>أفضل نتائج الاختبارات</h2></div></div>
+            <div id="top-results-list"><div class="empty-msg"><div class="empty-icon">📝</div><p>لا يوجد نتائج بعد</p></div></div>
+        </div>
+
+        <!-- المحتوى -->
+        <div class="section">
+            <div class="section-header"><div class="section-title"><div class="section-icon">🎬</div><h2>إحصائيات المحتوى</h2></div></div>
+            <div class="report-grid">
+                <div class="report-card">
+                    <div class="r-icon">🎬</div>
+                    <div class="r-number" id="rep-videos">0</div>
+                    <div class="r-label">فيديوهات</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">🎵</div>
+                    <div class="r-number" id="rep-audios">0</div>
+                    <div class="r-label">صوتيات</div>
+                </div>
+                <div class="report-card">
+                    <div class="r-icon">📚</div>
+                    <div class="r-number" id="rep-books">0</div>
+                    <div class="r-label">كتب</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, deleteDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD44MSupggsr-F3lQ-ctE41Khfm5jDEIpY",
+        authDomain: "arabic-academy-81393.firebaseapp.com",
+        projectId: "arabic-academy-81393",
+        storageBucket: "arabic-academy-81393.firebasestorage.app",
+        messagingSenderId: "436539487342",
+        appId: "1:436539487342:web:9f418b994f9007d135e27f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    window._db = db;
+    window._collection = collection;
+    window._addDoc = addDoc;
+    window._serverTimestamp = serverTimestamp;
+    window._deleteDoc = deleteDoc;
+    window._doc = doc;
+
+    const ADMIN_PASSWORD = "AkAd@2025";
+    window._students = [];
+    window._teachers = [];
+    window._lessons = [];
+    window._groups = [];
+
+    window.adminLogin = () => {
+        const pass = document.getElementById('adminPass').value.trim();
+        if (pass !== ADMIN_PASSWORD) {
+            const box = document.getElementById('loginMsg');
+            box.textContent = 'كلمة السر غلط ❌';
+            box.className = 'msg error';
+            return;
+        }
+        localStorage.setItem('adminLoggedIn', 'true');
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadAll();
+    };
+
+    window.adminLogout = () => {
+        localStorage.removeItem('adminLoggedIn');
+        location.reload();
+    };
+
+    if (localStorage.getItem('adminLoggedIn') === 'true') {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadAll();
+    }
+
+    function loadAll() {
+        loadStudents();
+        loadTeachers();
+        loadGroups();
+        loadLessons();
+        loadContent();
+        loadQuizzes();
+        loadNotifications();
+        loadMessages();
+        loadReports();
+    }
+
+    function loadStudents() {
+        onSnapshot(collection(db, 'students'), function(snapshot) {
+            window._students = [];
+            snapshot.forEach(d => window._students.push({ id: d.id, ...d.data() }));
+            document.getElementById('totalStudents').textContent = window._students.length;
+            renderStudents();
+        });
+    }
+
+    function renderStudents() {
+        const list = document.getElementById('studentsList');
+        const studyMap = { quran: '🕌 القرآن الكريم', arabic: '📖 اللغة العربية', both: '✨ كلاهما' };
+        if (window._students.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">🎒</div><p>لا يوجد طلاب بعد</p></div>'; return; }
+        list.innerHTML = window._students.map(s => {
+            const myTeachers = window._groups.filter(g => g.studentId === s.id);
+            return `<div class="person-card">
+                <div class="person-card-header">
+                    <div><h3>🎒 ${s.fullName || s.name || 'بدون اسم'}</h3>
+                    <span class="${s.subscribed ? 'badge-sub-yes' : 'badge-sub-no'}">${s.subscribed ? '✅ مشترك' : '❌ غير مشترك'}</span></div>
+                    <button class="btn-delete" onclick="deletePerson('students','${s.id}')">🗑️ حذف</button>
+                </div>
+                <div class="person-info">
+                    <p>📧 الإيميل: <span>${s.email || '-'}</span></p>
+                    <p>📱 واتساب: <span>${s.whatsapp || '-'}</span></p>
+                    <p>🌍 البلد: <span>${s.country || '-'}</span></p>
+                    <p>🎂 العمر: <span>${s.age || '-'}</span></p>
+                    <p>📚 يدرس: <span>${studyMap[s.study] || '-'}</span></p>
+                </div>
+                <div class="group-info">
+                    <h4>👥 مجموعات المعلمين (${myTeachers.length})</h4>
+                    ${myTeachers.length > 0 ? myTeachers.map(t => '<p>• 🎓 ' + (t.teacherName || 'معلم') + '</p>').join('') : '<p style="color:#475569">لم ينضم لأي مجموعة بعد</p>'}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function loadTeachers() {
+        onSnapshot(collection(db, 'teachers'), function(snapshot) {
+            window._teachers = [];
+            snapshot.forEach(d => window._teachers.push({ id: d.id, ...d.data() }));
+            document.getElementById('totalTeachers').textContent = window._teachers.length;
+            renderTeachers();
+        });
+    }
+
+    function renderTeachers() {
+        const list = document.getElementById('teachersList');
+        if (window._teachers.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">🎓</div><p>لا يوجد معلمين بعد</p></div>'; return; }
+        list.innerHTML = window._teachers.map(t => {
+            const myStudents = window._groups.filter(g => g.teacherId === (t.teacherId || t.id));
+            const myLessons = window._lessons.filter(l => l.teacherId === (t.teacherId || t.id));
+            return `<div class="person-card">
+                <div class="person-card-header">
+                    <div><h3>🎓 ${t.name || 'بدون اسم'}</h3>
+                    <span class="teacher-specialty">${t.specialty || 'غير محدد'}</span></div>
+                    <button class="btn-delete" onclick="deletePerson('teachers','${t.id}')">🗑️ حذف</button>
+                </div>
+                <div class="person-info">
+                    <p>📧 الإيميل: <span>${t.email || '-'}</span></p>
+                    <p>📱 واتساب: <span>${t.whatsapp || '-'}</span></p>
+                    <p>🌍 البلد: <span>${t.country || '-'}</span></p>
+                    <p>📋 الحصص: <span>${myLessons.length} حصة</span></p>
+                </div>
+                <div class="group-info">
+                    <h4>👥 طلاب المجموعة (${myStudents.length})</h4>
+                    ${myStudents.length > 0 ? myStudents.map(s => '<p>• 🎒 ' + (s.studentName || 'طالب') + ' (' + (s.studentEmail || '-') + ')</p>').join('') : '<p style="color:#475569">لا يوجد طلاب في المجموعة</p>'}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function loadGroups() {
+        onSnapshot(collection(db, 'teacherStudents'), function(snapshot) {
+            window._groups = [];
+            snapshot.forEach(d => window._groups.push({ id: d.id, ...d.data() }));
+            document.getElementById('totalGroups').textContent = window._groups.length;
+            renderGroups();
+            renderStudents();
+            renderTeachers();
+        });
+    }
+
+    function renderGroups() {
+        const byTeacher = {};
+        window._groups.forEach(g => {
+            if (!byTeacher[g.teacherId]) byTeacher[g.teacherId] = { teacherName: g.teacherName, students: [] };
+            byTeacher[g.teacherId].students.push(g);
+        });
+        const list = document.getElementById('groupsList');
+        const keys = Object.keys(byTeacher);
+        if (keys.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">👥</div><p>لا توجد مجموعات بعد</p></div>'; return; }
+        list.innerHTML = keys.map(tid => {
+            const g = byTeacher[tid];
+            return `<div class="person-card">
+                <div class="person-card-header">
+                    <h3>🎓 مجموعة: ${g.teacherName || 'معلم'}</h3>
+                    <span style="background:rgba(56,189,248,0.15);color:#38bdf8;padding:4px 12px;border-radius:20px;font-size:0.82rem;">${g.students.length} طالب</span>
+                </div>
+                ${g.students.map(s => `<div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:12px 15px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+                    <div><p style="font-size:0.9rem;font-weight:700;margin-bottom:2px;">🎒 ${s.studentName || 'طالب'}</p>
+                    <p style="font-size:0.8rem;color:#64748b;">📧 ${s.studentEmail || '-'} | 🌍 ${s.studentCountry || '-'}</p></div>
+                    <button class="btn-delete" onclick="deleteGroup('${s.id}')">🗑️ إزالة</button>
+                </div>`).join('')}
+            </div>`;
+        }).join('');
+    }
+
+    function loadLessons() {
+        onSnapshot(collection(db, 'lessons'), function(snapshot) {
+            window._lessons = [];
+            snapshot.forEach(d => window._lessons.push({ id: d.id, ...d.data() }));
+            document.getElementById('totalLessons').textContent = window._lessons.length;
+            const list = document.getElementById('allLessonsList');
+            if (window._lessons.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">📋</div><p>لا توجد حصص بعد</p></div>'; return; }
+            list.innerHTML = window._lessons.map(l => `
+                <div class="lesson-card">
+                    <h3>📚 ${l.title}</h3>
+                    <p>📅 ${l.date} - ⏰ ${l.time}</p>
+                    <p>🎓 المعلم: ${l.teacherName || l.teacherId || '-'}</p>
+                    <span class="badge ${l.status === 'done' ? 'badge-done' : 'badge-upcoming'}">${l.status === 'done' ? '✅ منتهية' : '⏳ قادمة'}</span>
+                    <button class="btn-delete" style="margin-right:10px" onclick="deleteItem('lessons','${l.id}')">🗑️ حذف</button>
+                </div>`).join('');
+            renderTeachers();
+        });
+    }
+
+    function loadQuizzes() {
+        onSnapshot(collection(db, 'quizzes'), function(snapshot) {
+            const quizzes = [];
+            snapshot.forEach(d => quizzes.push({ id: d.id, ...d.data() }));
+            document.getElementById('totalQuizzes').textContent = quizzes.length;
+            const list = document.getElementById('quizzesList');
+            if (quizzes.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">📝</div><p>لا توجد اختبارات بعد</p></div>'; return; }
+            list.innerHTML = quizzes.map(q => `
+                <div class="quiz-card">
+                    <div>
+                        <h3>📝 ${q.title}</h3>
+                        <p>المستوى ${q.level || 1} | ${q.questions ? q.questions.length : 0} سؤال ${q.description ? '| ' + q.description : ''}</p>
+                    </div>
+                    <button class="btn-delete" onclick="deleteItem('quizzes','${q.id}')">🗑️ حذف</button>
+                </div>`).join('');
+        });
+
+        onSnapshot(collection(db, 'quizResults'), function(snapshot) {
+            const results = [];
+            snapshot.forEach(d => results.push({ id: d.id, ...d.data() }));
+            document.getElementById('totalResults').textContent = results.length;
+            const list = document.getElementById('quizResultsList');
+            if (results.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">🏆</div><p>لا توجد نتائج بعد</p></div>'; return; }
+            list.innerHTML = results.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0)).map(r => `
+                <div class="result-card">
+                    <h3>🎒 ${r.studentName || 'طالب'} - 📝 ${r.quizTitle || 'اختبار'}</h3>
+                    <p style="font-size:1.1rem;font-weight:bold;color:${r.score >= 70 ? '#86efac' : '#fca5a5'};">النتيجة: ${r.score}%</p>
+                    <p>✅ ${r.correct} صح | ❌ ${r.wrong} غلط</p>
+                    <p class="notif-time">${r.createdAt ? new Date(r.createdAt.seconds*1000).toLocaleString('ar') : ''}</p>
+                </div>`).join('');
+        });
+    }
+
+    function loadContent() {
+        onSnapshot(collection(db, 'videos'), function(snapshot) {
+            const items = [];
+            snapshot.forEach(d => items.push({ id: d.id, ...d.data() }));
+            const list = document.getElementById('videosList');
+            if (items.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">🎬</div><p>لا توجد فيديوهات</p></div>'; return; }
+            list.innerHTML = '<div class="content-grid">' + items.map(item => `
+                <div class="content-card">
+                    <iframe src="${item.url}" allowfullscreen></iframe>
+                    <div class="content-card-body">
+                        <span class="content-level">المستوى ${item.level}</span>
+                        <h3>${item.title}</h3>
+                        <p>${item.desc || ''}</p>
+                        <button class="btn-delete" onclick="deleteItem('videos','${item.id}')">🗑️ حذف</button>
+                    </div>
+                </div>`).join('') + '</div>';
+        });
+        onSnapshot(collection(db, 'audios'), function(snapshot) {
+            const items = [];
+            snapshot.forEach(d => items.push({ id: d.id, ...d.data() }));
+            const list = document.getElementById('audiosList');
+            if (items.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">🎵</div><p>لا توجد صوتيات</p></div>'; return; }
+            list.innerHTML = items.map(item => `
+                <div class="item-card">
+                    <div><h3>🎵 ${item.title}</h3><p>المستوى ${item.level} ${item.desc ? '- ' + item.desc : ''}</p></div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <a class="btn-view" href="${item.url}" target="_blank">🎧 استمع</a>
+                        <button class="btn-delete" onclick="deleteItem('audios','${item.id}')">🗑️</button>
+                    </div>
+                </div>`).join('');
+        });
+        onSnapshot(collection(db, 'books'), function(snapshot) {
+            const items = [];
+            snapshot.forEach(d => items.push({ id: d.id, ...d.data() }));
+            const list = document.getElementById('booksList');
+            if (items.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">📚</div><p>لا توجد كتب</p></div>'; return; }
+            list.innerHTML = items.map(item => `
+                <div class="item-card">
+                    <div><h3>📚 ${item.title}</h3><p>المستوى ${item.level} ${item.desc ? '- ' + item.desc : ''}</p></div>
+                    <div style="display:flex;gap:8px;align-items:center;">
+                        <a class="btn-view" href="${item.url}" target="_blank">📖 اقرأ</a>
+                        <button class="btn-delete" onclick="deleteItem('books','${item.id}')">🗑️</button>
+                    </div>
+                </div>`).join('');
+        });
+    }
+
+    function loadNotifications() {
+        onSnapshot(collection(db, 'notifications'), function(snapshot) {
+            const notifs = [];
+            snapshot.forEach(d => notifs.push({ id: d.id, ...d.data() }));
+            const list = document.getElementById('allNotifsList');
+            if (notifs.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">🔔</div><p>لا توجد إشعارات</p></div>'; return; }
+            list.innerHTML = notifs.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0)).map(n => `
+                <div class="lesson-card">
+                    <h3>🔔 ${n.title}</h3>
+                    <p>🎓 من: ${n.teacherName || 'المعلم'} | ${n.type === 'all' ? '📢 للجميع' : '👤 لـ ' + (n.targetName || '')}</p>
+                    <p style="color:#94a3b8;margin-top:5px;">${n.body}</p>
+                    <p class="notif-time">${n.createdAt ? new Date(n.createdAt.seconds*1000).toLocaleString('ar') : ''}</p>
+                    <button class="btn-delete" onclick="deleteItem('notifications','${n.id}')">🗑️ حذف</button>
+                </div>`).join('');
+        });
+    }
+
+    function loadMessages() {
+        onSnapshot(collection(db, 'messages_teacher'), function(snapshot) {
+            const msgs = [];
+            snapshot.forEach(d => msgs.push({ id: d.id, ...d.data() }));
+            const list = document.getElementById('allMsgsList');
+            if (msgs.length === 0) { list.innerHTML = '<div class="empty-msg"><div class="empty-icon">💬</div><p>لا توجد رسائل</p></div>'; return; }
+            list.innerHTML = msgs.sort((a,b) => (b.createdAt?.seconds||0) - (a.createdAt?.seconds||0)).map(m => `
+                <div class="lesson-card">
+                    <h3>💬 من: ${m.teacherName || 'المعلم'} → إلى: ${m.studentName || m.studentId}</h3>
+                    <p style="color:#94a3b8;margin-top:5px;">${m.body}</p>
+                    <p class="notif-time">${m.createdAt ? new Date(m.createdAt.seconds*1000).toLocaleString('ar') : ''}</p>
+                    <button class="btn-delete" onclick="deleteItem('messages_teacher','${m.id}')">🗑️ حذف</button>
+                </div>`).join('');
+        });
+    }
+
+    window.addVideo = async () => {
+        const title = document.getElementById('videoTitle').value.trim();
+        const url = document.getElementById('videoUrl').value.trim();
+        const desc = document.getElementById('videoDesc').value.trim();
+        const level = document.getElementById('videoLevel').value;
+        if (!title || !url) { showMsg('videoMsg', 'أدخل العنوان والرابط', 'error'); return; }
+        await addDoc(collection(db, 'videos'), { title, url: convertYouTubeUrl(url), desc, level, createdAt: serverTimestamp() });
+        showMsg('videoMsg', 'تم إضافة الفيديو ✅', 'success');
+        document.getElementById('videoTitle').value = '';
+        document.getElementById('videoUrl').value = '';
+        document.getElementById('videoDesc').value = '';
+    };
+
+    window.addAudio = async () => {
+        const title = document.getElementById('audioTitle').value.trim();
+        const url = document.getElementById('audioUrl').value.trim();
+        const desc = document.getElementById('audioDesc').value.trim();
+        const level = document.getElementById('audioLevel').value;
+        if (!title || !url) { showMsg('audioMsg', 'أدخل العنوان والرابط', 'error'); return; }
+        await addDoc(collection(db, 'audios'), { title, url, desc, level, createdAt: serverTimestamp() });
+        showMsg('audioMsg', 'تم إضافة الصوتية ✅', 'success');
+        document.getElementById('audioTitle').value = '';
+        document.getElementById('audioUrl').value = '';
+        document.getElementById('audioDesc').value = '';
+    };
+
+    window.addBook = async () => {
+        const title = document.getElementById('bookTitle').value.trim();
+        const url = document.getElementById('bookUrl').value.trim();
+        const desc = document.getElementById('bookDesc').value.trim();
+        const level = document.getElementById('bookLevel').value;
+        if (!title || !url) { showMsg('bookMsg', 'أدخل العنوان والرابط', 'error'); return; }
+        await addDoc(collection(db, 'books'), { title, url, desc, level, createdAt: serverTimestamp() });
+        showMsg('bookMsg', 'تم إضافة الكتاب ✅', 'success');
+        document.getElementById('bookTitle').value = '';
+        document.getElementById('bookUrl').value = '';
+        document.getElementById('bookDesc').value = '';
+    };
+
+    window.saveQuiz = async () => {
+        const title = document.getElementById('quizTitle').value.trim();
+        const desc = document.getElementById('quizDesc').value.trim();
+        const level = document.getElementById('quizLevel').value;
+        if (!title) { showMsg('quizMsg', 'أدخل عنوان الاختبار', 'error'); return; }
+        const questions = [];
+        const rows = document.querySelectorAll('.quiz-question-row');
+        let valid = true;
+        rows.forEach(function(row) {
+            const idx = row.dataset.idx;
+            const qtextEl = document.getElementById('qtext_' + idx);
+            if (!qtextEl) return;
+            const question = qtextEl.value.trim();
+            if (!question) { valid = false; return; }
+            const options = [];
+            for (let i = 0; i < 4; i++) {
+                const optEl = document.getElementById('opt_' + idx + '_' + i);
+                options.push(optEl ? optEl.value.trim() : '');
+            }
+            if (options.filter(o => o).length < 2) { valid = false; return; }
+            const correct = parseInt(document.getElementById('correctAns_' + idx).value);
+            questions.push({ question, options, correct });
+        });
+        if (!valid || questions.length === 0) { showMsg('quizMsg', 'أضف أسئلة صحيحة مع خيارات (خيارين على الأقل)', 'error'); return; }
+        await addDoc(collection(db, 'quizzes'), { title, description: desc, level, questions, createdAt: serverTimestamp() });
+        showMsg('quizMsg', 'تم حفظ الاختبار بنجاح ✅', 'success');
+        document.getElementById('quizTitle').value = '';
+        document.getElementById('quizDesc').value = '';
+        document.getElementById('questionsContainer').innerHTML = '';
+        window._questionCount = 0;
+    };
+
+
+    function loadReports() {
+        // طلاب
+        onSnapshot(collection(db, 'students'), function(snapshot) {
+            var students = [];
+            snapshot.forEach(function(d) { students.push({ id: d.id, ...d.data() }); });
+            var total = students.length;
+            var subscribed = students.filter(function(s){ return s.subscribed; }).length;
+            document.getElementById('rep-students').textContent = total;
+            document.getElementById('rep-students-sub').textContent = subscribed + ' مشترك';
+
+            // نسب الاشتراك
+            var subPct = total > 0 ? Math.round((subscribed/total)*100) : 0;
+            var unsubPct = 100 - subPct;
+            document.getElementById('bar-subscribed').style.width = subPct + '%';
+            document.getElementById('bar-subscribed-pct').textContent = subPct + '%';
+            document.getElementById('bar-unsubscribed').style.width = unsubPct + '%';
+            document.getElementById('bar-unsubscribed-pct').textContent = unsubPct + '%';
+
+            // تخصصات
+            var quranCount = students.filter(function(s){ return s.study === 'quran'; }).length;
+            var arabicCount = students.filter(function(s){ return s.study === 'arabic'; }).length;
+            var bothCount = students.filter(function(s){ return s.study === 'both'; }).length;
+            var qPct = total > 0 ? Math.round((quranCount/total)*100) : 0;
+            var aPct = total > 0 ? Math.round((arabicCount/total)*100) : 0;
+            var bPct = total > 0 ? Math.round((bothCount/total)*100) : 0;
+            document.getElementById('bar-quran').style.width = qPct + '%';
+            document.getElementById('bar-quran-pct').textContent = qPct + '% (' + quranCount + ')';
+            document.getElementById('bar-arabic').style.width = aPct + '%';
+            document.getElementById('bar-arabic-pct').textContent = aPct + '% (' + arabicCount + ')';
+            document.getElementById('bar-both').style.width = bPct + '%';
+            document.getElementById('bar-both-pct').textContent = bPct + '% (' + bothCount + ')';
+
+            // البلدان
+            var countryMap = {};
+            students.forEach(function(s) {
+                if (s.country) countryMap[s.country] = (countryMap[s.country] || 0) + 1;
+            });
+            var countries = Object.keys(countryMap).sort(function(a,b){ return countryMap[b]-countryMap[a]; }).slice(0,8);
+            var cList = document.getElementById('countries-list');
+            if (countries.length === 0) { cList.innerHTML = '<div class="empty-msg"><div class="empty-icon">🌍</div><p>لا يوجد بيانات</p></div>'; }
+            else {
+                cList.innerHTML = countries.map(function(c, i) {
+                    var pct = total > 0 ? Math.round((countryMap[c]/total)*100) : 0;
+                    return '<div class="chart-bar-container"><div class="chart-bar-label"><span>' + (i+1) + '. ' + c + '</span><span>' + countryMap[c] + ' طالب (' + pct + '%)</span></div><div class="chart-bar-track"><div class="chart-bar-fill" style="width:' + pct + '%;background:linear-gradient(135deg,#0369a1,#38bdf8)"></div></div></div>';
+                }).join('');
+            }
+        });
+
+        // معلمين
+        onSnapshot(collection(db, 'teachers'), function(snapshot) {
+            var teachers = [];
+            snapshot.forEach(function(d) { teachers.push({ id: d.id, ...d.data() }); });
+            document.getElementById('rep-teachers').textContent = teachers.length;
+            var specs = [...new Set(teachers.map(function(t){ return t.specialty; }).filter(Boolean))];
+            document.getElementById('rep-teachers-sub').textContent = specs.length + ' تخصص';
+        });
+
+        // حصص
+        onSnapshot(collection(db, 'lessons'), function(snapshot) {
+            var lessons = [];
+            snapshot.forEach(function(d) { lessons.push({ id: d.id, ...d.data() }); });
+            var done = lessons.filter(function(l){ return l.status === 'done'; }).length;
+            document.getElementById('rep-lessons').textContent = lessons.length;
+            document.getElementById('rep-lessons-sub').textContent = done + ' مكتملة';
+
+            // أكثر المعلمين نشاطاً
+            var teacherLessons = {};
+            var teacherNames = {};
+            lessons.forEach(function(l) {
+                var tid = l.teacherId;
+                teacherLessons[tid] = (teacherLessons[tid] || 0) + 1;
+                teacherNames[tid] = l.teacherName || tid;
+            });
+            var sorted = Object.keys(teacherLessons).sort(function(a,b){ return teacherLessons[b]-teacherLessons[a]; }).slice(0,5);
+            var tList = document.getElementById('top-teachers-list');
+            if (sorted.length === 0) { tList.innerHTML = '<div class="empty-msg"><div class="empty-icon">🎓</div><p>لا يوجد بيانات</p></div>'; }
+            else {
+                tList.innerHTML = sorted.map(function(tid, i) {
+                    return '<div class="top-item"><span class="top-rank">' + (i+1) + '</span><div><h4>🎓 ' + teacherNames[tid] + '</h4><p>' + teacherLessons[tid] + ' حصة</p></div></div>';
+                }).join('');
+            }
+        });
+
+        // مجموعات
+        onSnapshot(collection(db, 'teacherStudents'), function(snapshot) {
+            var groups = [];
+            snapshot.forEach(function(d) { groups.push({ id: d.id, ...d.data() }); });
+            document.getElementById('rep-groups').textContent = groups.length;
+            var teacherIds = [...new Set(groups.map(function(g){ return g.teacherId; }))];
+            var avg = teacherIds.length > 0 ? Math.round(groups.length / teacherIds.length) : 0;
+            document.getElementById('rep-groups-sub').textContent = 'متوسط ' + avg + ' طالب/معلم';
+        });
+
+        // اختبارات
+        onSnapshot(collection(db, 'quizzes'), function(snapshot) {
+            document.getElementById('rep-quizzes').textContent = snapshot.size;
+        });
+        onSnapshot(collection(db, 'quizResults'), function(snapshot) {
+            var results = [];
+            snapshot.forEach(function(d) { results.push({ id: d.id, ...d.data() }); });
+            document.getElementById('rep-quizzes-sub').textContent = results.length + ' نتيجة';
+
+            // أفضل النتائج
+            var top = results.sort(function(a,b){ return (b.score||0)-(a.score||0); }).slice(0,5);
+            var rList = document.getElementById('top-results-list');
+            if (top.length === 0) { rList.innerHTML = '<div class="empty-msg"><div class="empty-icon">📝</div><p>لا يوجد نتائج بعد</p></div>'; }
+            else {
+                rList.innerHTML = top.map(function(r, i) {
+                    var color = r.score >= 80 ? '#86efac' : r.score >= 60 ? '#fcd34d' : '#fca5a5';
+                    return '<div class="top-item"><span class="top-rank">' + (i+1) + '</span><div><h4>🎒 ' + (r.studentName||'طالب') + ' - ' + (r.quizTitle||'اختبار') + '</h4><p style="color:' + color + ';font-weight:700;">' + r.score + '%</p></div></div>';
+                }).join('');
+            }
+        });
+
+        // تقييمات
+        onSnapshot(collection(db, 'ratings'), function(snapshot) {
+            var ratings = [];
+            snapshot.forEach(function(d) { ratings.push({ id: d.id, ...d.data() }); });
+            document.getElementById('rep-ratings').textContent = ratings.length;
+            var avg = ratings.length > 0 ? (ratings.reduce(function(s,r){ return s+(r.rating||0); },0)/ratings.length).toFixed(1) : 0;
+            document.getElementById('rep-ratings-sub').textContent = 'متوسط ' + avg + '/5';
+        });
+
+        // محتوى
+        onSnapshot(collection(db, 'videos'), function(s) { document.getElementById('rep-videos').textContent = s.size; });
+        onSnapshot(collection(db, 'audios'), function(s) { document.getElementById('rep-audios').textContent = s.size; });
+        onSnapshot(collection(db, 'books'), function(s) { document.getElementById('rep-books').textContent = s.size; });
+    }
+
+    window.deleteItem = async (colName, id) => {
+        if (confirm('هل تريد حذف هذا العنصر؟')) await deleteDoc(doc(db, colName, id));
+    };
+
+    window.deletePerson = async (colName, id) => {
+        if (confirm('هل تريد حذف هذا المستخدم نهائياً؟')) await deleteDoc(doc(db, colName, id));
+    };
+
+    window.deleteGroup = async (id) => {
+        if (confirm('هل تريد إزالة هذا الطالب من المجموعة؟')) await deleteDoc(doc(db, 'teacherStudents', id));
+    };
+
+    function convertYouTubeUrl(url) {
+        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
+        if (match) return 'https://www.youtube.com/embed/' + match[1];
+        return url;
+    }
+
+    function showMsg(id, text, type) {
+        const box = document.getElementById(id);
+        box.textContent = text;
+        box.className = 'msg ' + type;
+        setTimeout(() => { box.className = 'msg'; }, 3000);
+    }
+</script>
+
+<script>
+    window._questionCount = 0;
+
+    function showPage(page, btn) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.inner-nav-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('page-' + page).classList.add('active');
+        if (btn) btn.classList.add('active');
+    }
+
+    function switchTab(tab, btn) {
+        const parent = btn.closest('.section') || btn.closest('.container');
+        if (parent) {
+            parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            parent.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        }
+        document.getElementById('tab-' + tab).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    function addQuestionField() {
+        window._questionCount++;
+        const idx = window._questionCount;
+        const container = document.getElementById('questionsContainer');
+        const div = document.createElement('div');
+        div.className = 'quiz-question-row';
+        div.dataset.idx = idx;
+        div.innerHTML = `
+            <h4>❓ السؤال ${idx}</h4>
+            <input type="text" class="input-field" placeholder="اكتب نص السؤال هنا..." id="qtext_${idx}">
+            ${[0,1,2,3].map(i => `
+            <div class="quiz-option-row">
+                <input type="text" placeholder="الخيار ${i+1}" id="opt_${idx}_${i}">
+                <button class="btn-correct unselected" id="correct_${idx}_${i}" onclick="setCorrect(${idx},${i})">✓ صح</button>
+            </div>`).join('')}
+            <input type="hidden" id="correctAns_${idx}" value="0">
+            <button class="btn-del-q" onclick="this.closest('.quiz-question-row').remove()">🗑️ حذف السؤال</button>
+        `;
+        container.appendChild(div);
+        setCorrect(idx, 0);
+    }
+
+    function setCorrect(qIdx, optIdx) {
+        for (let i = 0; i < 4; i++) {
+            const btn = document.getElementById('correct_' + qIdx + '_' + i);
+            if (btn) {
+                btn.className = i === optIdx ? 'btn-correct selected' : 'btn-correct unselected';
+                btn.textContent = i === optIdx ? '✅ صح' : '✓ صح';
+            }
+        }
+        const ans = document.getElementById('correctAns_' + qIdx);
+        if (ans) ans.value = optIdx;
+    }
+</script>
+
+</body>
+</html>
+HTMLEOF

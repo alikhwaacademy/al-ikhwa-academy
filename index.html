@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أكاديمية الإخوة لتعليم اللغة العربية والقرآن الكريم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif;}
+        html{scroll-behavior:smooth;}
+        body{background:#0f172a;color:white;overflow-x:hidden;}
+
+        nav{position:fixed;top:0;width:100%;padding:15px 50px;display:flex;justify-content:space-between;align-items:center;background:rgba(15,23,42,0.95);backdrop-filter:blur(10px);z-index:100;border-bottom:1px solid rgba(255,255,255,0.08);}
+        .logo{font-size:1.1rem;font-weight:700;color:white;}
+        .logo span{color:#38bdf8;}
+        nav ul{display:flex;list-style:none;gap:25px;align-items:center;}
+        nav a{color:#94a3b8;text-decoration:none;font-weight:600;transition:0.3s;font-size:0.95rem;}
+        nav a:hover{color:white;}
+        .nav-btn-student{background:#38bdf8;color:#0f172a;border:none;padding:9px 20px;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:bold;font-size:0.9rem;transition:0.3s;}
+        .nav-btn-student:hover{background:#0ea5e9;}
+
+        .hero{min-height:100vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:120px 20px 60px;background:linear-gradient(135deg,#0f172a 0%,#1e293b 50%,#0f2557 100%);position:relative;overflow:hidden;}
+        .hero::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(ellipse at center,rgba(37,99,235,0.15) 0%,transparent 60%);animation:pulse 4s ease-in-out infinite;}
+        @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.05);}}
+        .hero-content{position:relative;z-index:1;max-width:800px;}
+        .hero-badge{display:inline-block;background:rgba(56,189,248,0.1);border:1px solid rgba(56,189,248,0.3);color:#38bdf8;padding:6px 20px;border-radius:50px;font-size:0.9rem;margin-bottom:25px;}
+        .hero h1{font-size:3rem;font-weight:900;line-height:1.3;margin-bottom:20px;background:linear-gradient(135deg,#ffffff,#38bdf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+        .hero p{font-size:1.1rem;color:#94a3b8;line-height:1.9;margin-bottom:40px;max-width:600px;margin-left:auto;margin-right:auto;}
+        .hero-btn-primary{background:linear-gradient(135deg,#2563eb,#38bdf8);color:white;border:none;padding:15px 40px;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;font-weight:bold;font-size:1.1rem;transition:0.3s;box-shadow:0 10px 30px rgba(37,99,235,0.4);}
+        .hero-btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(37,99,235,0.5);}
+        .hero-stats{display:flex;gap:40px;justify-content:center;margin-top:60px;flex-wrap:wrap;}
+        .hero-stat h3{font-size:2rem;font-weight:900;color:#38bdf8;}
+        .hero-stat p{font-size:0.85rem;color:#64748b;}
+
+        .section{padding:80px 50px;max-width:1200px;margin:0 auto;}
+        .section-title{text-align:center;margin-bottom:60px;}
+        .section-title h2{font-size:2rem;font-weight:800;margin-bottom:10px;}
+        .section-title p{color:#64748b;font-size:1rem;}
+        .features-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:25px;}
+        .feature-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:30px;transition:0.3s;}
+        .feature-card:hover{background:rgba(255,255,255,0.08);transform:translateY(-5px);border-color:rgba(56,189,248,0.3);}
+        .feature-icon{font-size:2.5rem;margin-bottom:15px;}
+        .feature-card h3{font-size:1.1rem;margin-bottom:10px;font-weight:700;}
+        .feature-card p{font-size:0.9rem;color:#64748b;line-height:1.7;}
+
+        .curriculum{background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);}
+        .curriculum-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:20px;}
+        .curriculum-card{background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(56,189,248,0.05));border:1px solid rgba(37,99,235,0.2);border-radius:15px;padding:25px;text-align:center;}
+        .curriculum-card .num{font-size:2rem;font-weight:900;color:#38bdf8;margin-bottom:5px;}
+        .curriculum-card h3{font-size:1rem;font-weight:700;margin-bottom:8px;}
+        .curriculum-card p{font-size:0.85rem;color:#64748b;}
+
+        .teachers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:25px;}
+        .teacher-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:30px;text-align:center;transition:0.3s;}
+        .teacher-card:hover{background:rgba(255,255,255,0.08);transform:translateY(-5px);}
+        .teacher-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:2rem;margin:0 auto 15px;}
+        .teacher-card h3{font-size:1rem;font-weight:700;margin-bottom:5px;}
+        .teacher-card p{font-size:0.85rem;color:#64748b;}
+
+        .testimonials{background:rgba(255,255,255,0.02);border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);}
+        .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:25px;}
+        .testimonial-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:25px;}
+        .testimonial-card p{font-size:0.95rem;color:#94a3b8;line-height:1.8;margin-bottom:20px;}
+        .testimonial-author{display:flex;align-items:center;gap:12px;}
+        .testimonial-avatar{width:45px;height:45px;border-radius:50%;background:linear-gradient(135deg,#2563eb,#38bdf8);display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+        .testimonial-author h4{font-size:0.95rem;font-weight:700;}
+        .testimonial-author p{font-size:0.8rem;color:#64748b;margin:0;}
+        .stars{color:#fbbf24;font-size:0.9rem;margin-bottom:15px;}
+
+        .cta{text-align:center;padding:80px 20px;background:linear-gradient(135deg,rgba(37,99,235,0.1),rgba(56,189,248,0.05));border-top:1px solid rgba(37,99,235,0.2);border-bottom:1px solid rgba(37,99,235,0.2);}
+        .cta h2{font-size:2rem;font-weight:800;margin-bottom:15px;}
+        .cta p{color:#64748b;margin-bottom:35px;font-size:1rem;}
+
+        footer{padding:50px;background:#080f1e;border-top:1px solid rgba(255,255,255,0.05);}
+        .footer-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px;max-width:1200px;margin:0 auto 40px;}
+        .footer-brand p{color:#64748b;font-size:0.9rem;line-height:1.7;margin-top:10px;}
+        .footer-links h4{font-size:1rem;font-weight:700;margin-bottom:15px;color:#38bdf8;}
+        .footer-links ul{list-style:none;}
+        .footer-links li{margin-bottom:10px;}
+        .footer-links a{color:#64748b;text-decoration:none;font-size:0.9rem;transition:0.3s;}
+        .footer-links a:hover{color:white;}
+        .footer-bottom{text-align:center;color:#334155;font-size:0.85rem;border-top:1px solid rgba(255,255,255,0.05);padding-top:25px;max-width:1200px;margin:0 auto;}
+
+        .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);justify-content:center;align-items:center;z-index:1000;overflow-y:auto;}
+        .modal-overlay.active{display:flex;}
+        .modal{background:#1e293b;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:35px;width:90%;max-width:450px;text-align:center;margin:20px auto;animation:slideUp 0.3s ease;}
+        @keyframes slideUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+        .modal h2{font-size:1.5rem;margin-bottom:20px;color:white;}
+        .social-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px;border-radius:50px;font-size:1rem;font-weight:bold;cursor:pointer;border:none;margin-bottom:12px;transition:0.3s;font-family:'Cairo',sans-serif;}
+        .btn-google{background:white;color:#333;}
+        .btn-google:hover{background:#f1f5f9;transform:translateY(-2px);}
+        .divider{display:flex;align-items:center;gap:10px;margin:15px 0;color:#64748b;font-size:0.9rem;}
+        .divider::before,.divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.1);}
+        .input-field{width:100%;padding:12px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.15);background:rgba(255,255,255,0.06);color:white;font-size:1rem;font-family:'Cairo',sans-serif;margin-bottom:12px;outline:none;transition:0.3s;}
+        .input-field::placeholder{color:#64748b;}
+        .input-field:focus{border-color:#38bdf8;}
+        select.input-field option{background:#1e293b;color:white;}
+        .btn-submit{width:100%;padding:13px;border-radius:50px;background:linear-gradient(135deg,#2563eb,#38bdf8);color:white;font-size:1rem;font-weight:bold;font-family:'Cairo',sans-serif;border:none;cursor:pointer;transition:0.3s;margin-top:5px;}
+        .btn-submit:hover{transform:translateY(-2px);box-shadow:0 10px 25px rgba(37,99,235,0.4);}
+        .close-btn{margin-top:12px;background:transparent;border:1px solid rgba(255,255,255,0.15);color:#64748b;padding:8px 20px;border-radius:50px;cursor:pointer;font-family:'Cairo',sans-serif;transition:0.3s;}
+        .close-btn:hover{color:white;border-color:white;}
+        .tab-btns{display:flex;margin-bottom:20px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.1);}
+        .tab-btn{flex:1;padding:10px;background:transparent;color:#64748b;border:none;cursor:pointer;font-family:'Cairo',sans-serif;font-size:0.95rem;transition:0.3s;}
+        .tab-btn.active{background:#2563eb;color:white;}
+        .msg{padding:10px;border-radius:10px;margin-bottom:12px;font-size:0.9rem;display:none;}
+        .msg.success{background:rgba(34,197,94,0.15);color:#86efac;display:block;border:1px solid rgba(34,197,94,0.2);}
+        .msg.error{background:rgba(239,68,68,0.15);color:#fca5a5;display:block;border:1px solid rgba(239,68,68,0.2);}
+        .register-fields{display:none;}
+        .register-fields.active{display:block;}
+    </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+    <div class="logo">📚 أكاديمية <span>الإخوة</span></div>
+    <ul>
+        <li><a href="#features">مميزاتنا</a></li>
+        <li><a href="#curriculum">المناهج</a></li>
+        <li><a href="#teachers">معلمونا</a></li>
+        <li><a href="#testimonials">آراء الطلاب</a></li>
+        <li><a href="contact.html">تواصل معنا</a></li>
+    </ul>
+    <button class="nav-btn-student" onclick="openModal('student')">🎒 دخول الطالب</button>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">🌟 أفضل أكاديمية لتعليم اللغة العربية والقرآن الكريم</div>
+        <h1>تعلم اللغة العربية والقرآن الكريم بأسلوب عصري</h1>
+        <p>نقدم تعليماً متميزاً للغة العربية وتلاوة القرآن الكريم من خلال مناهج متدرجة ومعلمين متخصصين، لنساعدك على إتقان اللغة وتحسين تلاوتك أينما كنت.</p>
+        <button class="hero-btn-primary" onclick="openModal('student')">🚀 ابدأ التعلم الآن</button>
+        <div class="hero-stats">
+            <div class="hero-stat"><h3>+500</h3><p>طالب مسجل</p></div>
+            <div class="hero-stat"><h3>+50</h3><p>معلم متخصص</p></div>
+            <div class="hero-stat"><h3>+1000</h3><p>حصة مكتملة</p></div>
+            <div class="hero-stat"><h3>15+</h3><p>دولة حول العالم</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- FEATURES -->
+<div id="features">
+    <div class="section">
+        <div class="section-title">
+            <h2>✨ لماذا أكاديمية الإخوة؟</h2>
+            <p>نقدم تجربة تعليمية فريدة تجمع بين الأصالة والحداثة</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🎥</div>
+                <h3>دروس مباشرة وتفاعلية</h3>
+                <p>حصص مباشرة مع المعلم بالفيديو والصوت داخل الموقع مباشرة بدون برامج إضافية.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📚</div>
+                <h3>مناهج متدرجة</h3>
+                <p>مناهج مصممة بعناية تبدأ من الصفر وتصل بك إلى الإتقان خطوة بخطوة.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🕌</div>
+                <h3>تعليم القرآن الكريم</h3>
+                <p>تعلم أحكام التجويد وتحسين التلاوة مع معلمين متخصصين في علوم القرآن.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌍</div>
+                <h3>لطلاب من كل العالم</h3>
+                <p>نستقبل طلاباً من أكثر من 15 دولة حول العالم، تعلم من أي مكان وفي أي وقت.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📱</div>
+                <h3>متوافق مع كل الأجهزة</h3>
+                <p>يعمل الموقع بشكل مثالي على الهاتف والتابلت والكمبيوتر.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎯</div>
+                <h3>تعلم خطوة بخطوة</h3>
+                <p>نظام تعليمي متدرج يضمن فهمك الكامل قبل الانتقال للمستوى التالي.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CURRICULUM -->
+<div id="curriculum" class="curriculum">
+    <div class="section">
+        <div class="section-title">
+            <h2>📖 مناهجنا التعليمية</h2>
+            <p>مناهج شاملة تغطي جميع مهارات اللغة العربية والقرآن الكريم</p>
+        </div>
+        <div class="curriculum-grid">
+            <div class="curriculum-card"><div class="num">01</div><h3>القراءة والكتابة</h3><p>تعلم قراءة النصوص العربية وكتابتها بشكل صحيح</p></div>
+            <div class="curriculum-card"><div class="num">02</div><h3>النحو والصرف</h3><p>قواعد اللغة العربية بأسلوب مبسط وسهل الفهم</p></div>
+            <div class="curriculum-card"><div class="num">03</div><h3>المحادثة والاستماع</h3><p>تطوير مهارات التحدث والاستماع باللغة العربية الفصحى</p></div>
+            <div class="curriculum-card"><div class="num">04</div><h3>تلاوة القرآن</h3><p>تعلم التلاوة الصحيحة وأحكام التجويد مع متخصصين</p></div>
+            <div class="curriculum-card"><div class="num">05</div><h3>حفظ القرآن</h3><p>برنامج متدرج لحفظ القرآن الكريم مع المراجعة المستمرة</p></div>
+            <div class="curriculum-card"><div class="num">06</div><h3>الأدب العربي</h3><p>دراسة روائع الأدب العربي شعراً ونثراً</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- TEACHERS -->
+<div id="teachers">
+    <div class="section">
+        <div class="section-title">
+            <h2>🎓 نخبة من المعلمين المتخصصين</h2>
+            <p>معلمون متميزون ذوو خبرة في تعليم اللغة العربية والقرآن الكريم</p>
+        </div>
+        <div class="teachers-grid">
+            <div class="teacher-card">
+                <div class="teacher-avatar">👨‍🏫</div>
+                <h3>معلمو اللغة العربية</h3>
+                <p>متخصصون في تعليم القراءة والكتابة والنحو والصرف</p>
+            </div>
+            <div class="teacher-card">
+                <div class="teacher-avatar">🕌</div>
+                <h3>معلمو القرآن الكريم</h3>
+                <p>حفظة للقرآن الكريم متخصصون في أحكام التجويد والتلاوة</p>
+            </div>
+            <div class="teacher-card">
+                <div class="teacher-avatar">✍️</div>
+                <h3>معلمو الخط العربي</h3>
+                <p>متخصصون في فنون الخط العربي وجمالياته</p>
+            </div>
+            <div class="teacher-card">
+                <div class="teacher-avatar">🎙️</div>
+                <h3>معلمو المحادثة</h3>
+                <p>متخصصون في تنمية مهارات التحدث والاستماع</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- TESTIMONIALS -->
+<div id="testimonials" class="testimonials">
+    <div class="section">
+        <div class="section-title">
+            <h2>💬 ماذا يقول طلابنا؟</h2>
+            <p>آراء حقيقية من طلابنا حول العالم</p>
+        </div>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"أكاديمية رائعة، تعلمت اللغة العربية من الصفر حتى أصبحت أقرأ وأكتب بطلاقة. المعلمون متميزون وصبورون جداً."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">👨</div>
+                    <div><h4>أحمد من إندونيسيا</h4><p>طالب لغة عربية</p></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"تحسن تلاوتي للقرآن بشكل ملحوظ بعد أشهر قليلة مع أكاديمية الإخوة. أنصح كل من يريد تعلم التجويد بالانضمام."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">👩</div>
+                    <div><h4>فاطمة من المملكة المتحدة</h4><p>طالبة تجويد</p></div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="stars">★★★★★</div>
+                <p>"نظام التعليم المباشر رائع جداً، أشعر وكأنني في فصل دراسي حقيقي. الأكاديمية تستحق كل التقدير."</p>
+                <div class="testimonial-author">
+                    <div class="testimonial-avatar">👨</div>
+                    <div><h4>محمد من فرنسا</h4><p>طالب لغة عربية</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+    <h2>🚀 ابدأ رحلتك التعليمية اليوم</h2>
+    <p>انضم لآلاف الطلاب من حول العالم وابدأ تعلم اللغة العربية والقرآن الكريم</p>
+    <button class="hero-btn-primary" onclick="openModal('student')">🎒 ابدأ التعلم الآن</button>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <div class="logo">📚 أكاديمية <span style="color:#38bdf8;">الإخوة</span></div>
+            <p>أكاديمية متخصصة في تعليم اللغة العربية والقرآن الكريم لغير الناطقين بها وللمسلمين حول العالم.</p>
+        </div>
+        <div class="footer-links">
+            <h4>روابط سريعة</h4>
+            <ul>
+                <li><a href="#features">مميزاتنا</a></li>
+                <li><a href="#curriculum">المناهج</a></li>
+                <li><a href="#teachers">معلمونا</a></li>
+                <li><a href="#testimonials">آراء الطلاب</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>روابط</h4>
+            <ul>
+                <li><a href="#" onclick="openModal('student')">🎒 دخول الطالب</a></li>
+                <li><a href="contact.html">📬 تواصل معنا</a></li>
+            </ul>
+        </div>
+        <div class="footer-links">
+            <h4>تواصل معنا</h4>
+            <ul>
+                <li><a href="#">📧 alekhwaacademy@gmail.com</a></li>
+                <li><a href="#">💬 واتساب: 01018075225</a></li>
+                <li><a href="#">🕐 السبت - الخميس</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>© 2025 أكاديمية الإخوة لتعليم اللغة العربية والقرآن الكريم - جميع الحقوق محفوظة</p>
+        <p style="margin-top:10px;font-size:0.75rem;">
+            <a href="#" onclick="openModal('teacher')" style="color:#1e293b;text-decoration:none;">دخول المعلمين</a>
+        </p>
+    </div>
+</footer>
+
+<!-- Modal الطالب -->
+<div class="modal-overlay" id="studentModal">
+    <div class="modal">
+        <h2>🎒 دخول الطالب</h2>
+        <div class="tab-btns">
+            <button class="tab-btn active" onclick="switchTab('login')">دخول</button>
+            <button class="tab-btn" onclick="switchTab('register')">تسجيل جديد</button>
+        </div>
+        <div id="studentMsg" class="msg"></div>
+        <button class="social-btn btn-google" onclick="loginWithGoogle()">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" width="22" height="22" alt="Google">
+            دخول بـ Google
+        </button>
+        <div class="divider">أو بالبريد الإلكتروني</div>
+        <div class="register-fields" id="registerFields">
+            <input type="text" class="input-field" placeholder="الاسم الكامل" id="studentName">
+            <input type="number" class="input-field" placeholder="العمر" id="studentAge" min="5" max="100">
+            <select class="input-field" id="studentCountry">
+                <option value="">🌍 اختر بلدك</option>
+                <option value="SA">🇸🇦 السعودية</option>
+                <option value="EG">🇪🇬 مصر</option>
+                <option value="AE">🇦🇪 الإمارات</option>
+                <option value="KW">🇰🇼 الكويت</option>
+                <option value="QA">🇶🇦 قطر</option>
+                <option value="BH">🇧🇭 البحرين</option>
+                <option value="OM">🇴🇲 عُمان</option>
+                <option value="JO">🇯🇴 الأردن</option>
+                <option value="LB">🇱🇧 لبنان</option>
+                <option value="SY">🇸🇾 سوريا</option>
+                <option value="IQ">🇮🇶 العراق</option>
+                <option value="YE">🇾🇪 اليمن</option>
+                <option value="LY">🇱🇾 ليبيا</option>
+                <option value="TN">🇹🇳 تونس</option>
+                <option value="DZ">🇩🇿 الجزائر</option>
+                <option value="MA">🇲🇦 المغرب</option>
+                <option value="SD">🇸🇩 السودان</option>
+                <option value="TR">🇹🇷 تركيا</option>
+                <option value="PK">🇵🇰 باكستان</option>
+                <option value="IN">🇮🇳 الهند</option>
+                <option value="ID">🇮🇩 إندونيسيا</option>
+                <option value="MY">🇲🇾 ماليزيا</option>
+                <option value="US">🇺🇸 الولايات المتحدة</option>
+                <option value="GB">🇬🇧 بريطانيا</option>
+                <option value="FR">🇫🇷 فرنسا</option>
+                <option value="DE">🇩🇪 ألمانيا</option>
+                <option value="CA">🇨🇦 كندا</option>
+                <option value="AU">🇦🇺 أستراليا</option>
+                <option value="NL">🇳🇱 هولندا</option>
+                <option value="SE">🇸🇪 السويد</option>
+                <option value="NO">🇳🇴 النرويج</option>
+                <option value="BE">🇧🇪 بلجيكا</option>
+                <option value="other">🌍 دولة أخرى</option>
+            </select>
+        </div>
+        <input type="email" class="input-field" placeholder="البريد الإلكتروني" id="studentEmail">
+        <input type="password" class="input-field" placeholder="كلمة المرور" id="studentPass">
+        <button class="btn-submit" id="studentSubmitBtn" onclick="handleStudentAuth()">دخول</button>
+        <br>
+        <button class="close-btn" onclick="closeModal('studentModal')">إغلاق</button>
+    </div>
+</div>
+
+<!-- Modal المعلم - مخفي في الفوتر -->
+<div class="modal-overlay" id="teacherModal">
+    <div class="modal">
+        <h2>🎓 دخول المعلم</h2>
+        <div id="teacherMsg" class="msg"></div>
+        <input type="password" class="input-field" placeholder="كلمة السر الخاصة بالمعلمين" id="teacherPass">
+        <button class="btn-submit" onclick="handleTeacherAuth()">دخول</button>
+        <br>
+        <button class="close-btn" onclick="closeModal('teacherModal')">إغلاق</button>
+    </div>
+</div>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getAuth, signInWithPopup, GoogleAuthProvider, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyD44MSupggsr-F3lQ-ctE41Khfm5jDEIpY",
+        authDomain: "arabic-academy-81393.firebaseapp.com",
+        projectId: "arabic-academy-81393",
+        storageBucket: "arabic-academy-81393.firebasestorage.app",
+        messagingSenderId: "436539487342",
+        appId: "1:436539487342:web:9f418b994f9007d135e27f"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+    const TEACHER_PASSWORD = "AkAd@2025";
+
+    onAuthStateChanged(auth, (user) => {
+        const role = localStorage.getItem('userRole');
+        if (user && role === 'student') { window.location.href = 'student.html'; }
+    });
+
+    window.loginWithGoogle = async () => {
+        try {
+            const result = await signInWithPopup(auth, provider);
+            const user = result.user;
+            await setDoc(doc(db, 'students', user.uid), {
+                name: user.displayName || '',
+                email: user.email,
+                photo: user.photoURL || '',
+                lastLogin: new Date().toISOString()
+            }, { merge: true });
+            localStorage.setItem('userRole', 'student');
+            window.location.href = 'student.html';
+        } catch (e) {
+            showMsg('studentMsg', 'حدث خطأ، حاول مرة أخرى', 'error');
+        }
+    };
+
+    window.handleStudentAuth = async () => {
+        const email = document.getElementById('studentEmail').value.trim();
+        const pass = document.getElementById('studentPass').value.trim();
+        if (!email || !pass) { showMsg('studentMsg', 'من فضلك أدخل البريد وكلمة المرور', 'error'); return; }
+        try {
+            if (window.currentTab === 'register') {
+                const name = document.getElementById('studentName').value.trim();
+                const age = document.getElementById('studentAge').value.trim();
+                const country = document.getElementById('studentCountry').value;
+                if (!name || !age || !country) { showMsg('studentMsg', 'من فضلك أدخل كل البيانات', 'error'); return; }
+                const result = await createUserWithEmailAndPassword(auth, email, pass);
+                await setDoc(doc(db, 'students', result.user.uid), {
+                    name, age, country, email, photo: '', subscribed: false, createdAt: new Date().toISOString()
+                });
+            } else {
+                await signInWithEmailAndPassword(auth, email, pass);
+            }
+            localStorage.setItem('userRole', 'student');
+            window.location.href = 'student.html';
+        } catch (e) {
+            const msgs = {
+                'auth/email-already-in-use': 'الإيميل ده مسجل قبل كده، ادخل من تبويب دخول',
+                'auth/wrong-password': 'كلمة المرور غلط',
+                'auth/user-not-found': 'مفيش حساب بالإيميل ده',
+                'auth/weak-password': 'كلمة المرور ضعيفة (6 أحرف على الأقل)',
+                'auth/invalid-email': 'الإيميل مش صحيح',
+                'auth/invalid-credential': 'الإيميل أو كلمة المرور غلط'
+            };
+            showMsg('studentMsg', msgs[e.code] || 'حدث خطأ، حاول مرة أخرى', 'error');
+        }
+    };
+
+    window.handleTeacherAuth = () => {
+        const pass = document.getElementById('teacherPass').value.trim();
+        if (!pass) { showMsg('teacherMsg', 'من فضلك أدخل كلمة السر', 'error'); return; }
+        if (pass !== TEACHER_PASSWORD) { showMsg('teacherMsg', 'كلمة السر غلط ❌', 'error'); return; }
+        localStorage.setItem('userRole', 'teacher');
+        showMsg('teacherMsg', 'أهلاً بالمعلم! ✅', 'success');
+        setTimeout(() => { window.location.href = 'teacher.html'; }, 1000);
+    };
+</script>
+
+<script>
+    window.currentTab = 'login';
+
+    function openModal(role) {
+        document.getElementById(role === 'teacher' ? 'teacherModal' : 'studentModal').classList.add('active');
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.getElementById('studentEmail') && (document.getElementById('studentEmail').value = '');
+        document.getElementById('studentPass') && (document.getElementById('studentPass').value = '');
+        document.getElementById('teacherPass') && (document.getElementById('teacherPass').value = '');
+    }
+
+    function switchTab(tab) {
+        window.currentTab = tab;
+        document.querySelectorAll('.tab-btn').forEach((b, i) => {
+            b.classList.toggle('active', (tab === 'login' && i === 0) || (tab === 'register' && i === 1));
+        });
+        document.getElementById('studentSubmitBtn').textContent = tab === 'login' ? 'دخول' : 'تسجيل';
+        document.getElementById('registerFields').classList.toggle('active', tab === 'register');
+    }
+
+    function showMsg(id, text, type) {
+        const box = document.getElementById(id);
+        box.textContent = text;
+        box.className = 'msg ' + type;
+    }
+
+    document.getElementById('studentModal').addEventListener('click', function(e) { if (e.target === this) closeModal('studentModal'); });
+    document.getElementById('teacherModal').addEventListener('click', function(e) { if (e.target === this) closeModal('teacherModal'); });
+</script>
+
+</body>
+</html>
+HTMLEOF

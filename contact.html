@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تواصل معنا - أكاديمية الإخوة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:'Cairo',sans-serif;
+        }
+
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,#0f172a,#1e293b,#2563eb);
+            color:white;
+        }
+
+        nav{
+            padding:20px 40px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            background:rgba(255,255,255,0.05);
+            backdrop-filter:blur(10px);
+        }
+
+        .logo{
+            font-size:1.3rem;
+            font-weight:bold;
+        }
+
+        nav ul{
+            display:flex;
+            list-style:none;
+            gap:20px;
+        }
+
+        nav a{
+            color:white;
+            text-decoration:none;
+            font-weight:bold;
+            transition:0.3s;
+        }
+
+        nav a:hover{
+            color:#93c5fd;
+        }
+
+        .container{
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            min-height:calc(100vh - 80px);
+            padding:40px 20px;
+        }
+
+        .card{
+            background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(12px);
+            border-radius:25px;
+            padding:50px 40px;
+            width:100%;
+            max-width:600px;
+            box-shadow:0 15px 35px rgba(0,0,0,0.3);
+            animation:fadeIn 1s ease;
+        }
+
+        h1{
+            font-size:2rem;
+            margin-bottom:10px;
+            text-align:center;
+        }
+
+        .subtitle{
+            text-align:center;
+            color:#93c5fd;
+            margin-bottom:35px;
+            font-size:1rem;
+        }
+
+        .info-boxes{
+            display:flex;
+            gap:15px;
+            flex-wrap:wrap;
+            margin-bottom:35px;
+        }
+
+        .info-box{
+            flex:1;
+            min-width:150px;
+            background:rgba(255,255,255,0.08);
+            border-radius:15px;
+            padding:20px;
+            text-align:center;
+            border:1px solid rgba(255,255,255,0.1);
+        }
+
+        .info-box .icon{
+            font-size:2rem;
+            margin-bottom:8px;
+        }
+
+        .info-box p{
+            font-size:0.85rem;
+            color:#94a3b8;
+            margin-bottom:5px;
+        }
+
+        .info-box span{
+            font-size:0.95rem;
+            color:white;
+        }
+
+        .input-field{
+            width:100%;
+            padding:12px 16px;
+            border-radius:12px;
+            border:1px solid rgba(255,255,255,0.2);
+            background:rgba(255,255,255,0.08);
+            color:white;
+            font-size:1rem;
+            font-family:'Cairo',sans-serif;
+            margin-bottom:15px;
+            outline:none;
+            transition:0.3s;
+        }
+
+        .input-field::placeholder{
+            color:#94a3b8;
+        }
+
+        .input-field:focus{
+            border-color:#2563eb;
+            background:rgba(255,255,255,0.12);
+        }
+
+        textarea.input-field{
+            resize:vertical;
+            min-height:130px;
+        }
+
+        .btn-submit{
+            width:100%;
+            padding:14px;
+            border-radius:50px;
+            background:#2563eb;
+            color:white;
+            font-size:1.1rem;
+            font-weight:bold;
+            font-family:'Cairo',sans-serif;
+            border:none;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        .btn-submit:hover{
+            background:#1d4ed8;
+            transform:translateY(-2px);
+            box-shadow:0 10px 20px rgba(37,99,235,0.4);
+        }
+
+        @keyframes fadeIn{
+            from{opacity:0;transform:translateY(30px);}
+            to{opacity:1;transform:translateY(0);}
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">📚 أكاديمية الإخوة لتعليم اللغة العربية</div>
+    <ul>
+        <li><a href="index.html">الرئيسية</a></li>
+        <li><a href="contact.html">تواصل معنا</a></li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="card">
+        <h1>📬 تواصل معنا</h1>
+        <p class="subtitle">يسعدنا سماع رأيك وإجابة استفساراتك</p>
+
+        <div class="info-boxes">
+            <div class="info-box">
+                <div class="icon">📧</div>
+                <p>البريد الإلكتروني</p>
+                <span>alekhwaacademy@gmail.com</span>
+            </div>
+            <div class="info-box">
+                <div class="icon">💬</div>
+                <p>واتساب</p>
+                <span>+20 01018075225</span>
+            </div>
+            <div class="info-box">
+                <div class="icon">🕐</div>
+                <p>أوقات الرد</p>
+                <span>السبت - الخميس</span>
+            </div>
+        </div>
+
+        <form action="https://formsubmit.co/alekhwaacademy@gmail.com" method="POST">
+            <input type="hidden" name="_subject" value="رسالة جديدة من أكاديمية الإخوة">
+            <input type="hidden" name="_next" value="contact.html">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="table">
+
+            <input type="text" name="الاسم" class="input-field" placeholder="الاسم الكامل" required>
+            <input type="email" name="الإيميل" class="input-field" placeholder="البريد الإلكتروني" required>
+            <input type="text" name="الموضوع" class="input-field" placeholder="موضوع الرسالة" required>
+            <textarea name="الرسالة" class="input-field" placeholder="اكتب رسالتك هنا..." required></textarea>
+
+            <button type="submit" class="btn-submit">إرسال الرسالة 📨</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قاعة الدرس المباشر - أكاديمية الإخوة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://meet.jit.si/external_api.js"></script>
+    <style>
+        *{ margin:0; padding:0; box-sizing:border-box; font-family:'Cairo',sans-serif; }
+        body{ min-height:100vh; background:linear-gradient(135deg,#0f172a,#1e293b,#2563eb); color:white; display:flex; flex-direction:column; }
+        nav{ padding:20px 40px; display:flex; justify-content:space-between; align-items:center; background:rgba(255,255,255,0.05); backdrop-filter:blur(10px); border-bottom:1px solid rgba(255,255,255,0.1); }
+        .logo{ font-size:1.3rem; font-weight:bold; }
+        .back-btn{ background:rgba(255,255,255,0.1); color:white; border:1px solid rgba(255,255,255,0.2); padding:8px 16px; border-radius:8px; cursor:pointer; text-decoration:none; font-weight:bold; font-size:0.9rem; transition:0.3s; }
+        .back-btn:hover{ background:rgba(255,255,255,0.2); }
+        .main-container{ flex:1; display:flex; flex-direction:column; align-items:center; padding:20px; }
+        .title-bar{ width:100%; max-width:1200px; margin-bottom:15px; background:rgba(255,255,255,0.05); padding:15px 25px; border-radius:12px; border:1px solid rgba(255,255,255,0.1); display:flex; justify-content:space-between; align-items:center; }
+        .title-bar h2{ font-size:1.3rem; color:#38bdf8; }
+        .live-badge{ background:#22c55e; padding:4px 12px; border-radius:20px; font-size:0.85rem; font-weight:bold; }
+        #meetContainer{ width:100%; max-width:1200px; height:75vh; background:#020617; border-radius:16px; overflow:hidden; box-shadow:0 20px 40px rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); }
+        .loading-box{ text-align:center; padding:60px 20px; }
+        .spinner{ width:50px; height:50px; border:5px solid rgba(255,255,255,0.1); border-top-color:#38bdf8; border-radius:50%; animation:spin 1s linear infinite; margin:0 auto 20px; }
+        @keyframes spin{ to{ transform:rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">📚 أكاديمية الإخوة - القاعة المباشرة</div>
+    <a href="javascript:history.back()" class="back-btn">🔙 خروج من القاعة</a>
+</nav>
+
+<div class="main-container">
+    <div class="title-bar">
+        <h2 id="roomTitle">🎓 قاعة الدرس المباشر</h2>
+        <span class="live-badge">🔴 بث مباشر الآن</span>
+    </div>
+
+    <div id="loadingBox" class="loading-box">
+        <div class="spinner"></div>
+        <p>جاري تجهيز القاعة المباشرة...</p>
+    </div>
+
+    <div id="meetContainer" style="display:none;"></div>
+</div>
+
+<script>
+    // جلب اسم الغرفة من الرابط أو استخدام اسم افتراضي
+    const urlParams = new URLSearchParams(window.location.search);
+    const roomParam = urlParams.get('room');
+    const titleParam = urlParams.get('title');
+
+    const roomName = roomParam || 'AlEkhwaAcademy_GeneralRoom';
+    const roomTitle = titleParam ? decodeURIComponent(titleParam) : 'قاعة الدرس المباشر';
+
+    document.getElementById('roomTitle').textContent = '🎓 ' + roomTitle;
+
+    // تشغيل Jitsi Meet
+    window.onload = function() {
+        document.getElementById('loadingBox').style.display = 'none';
+        document.getElementById('meetContainer').style.display = 'block';
+
+        const domain = 'meet.jit.si';
+        const options = {
+            roomName: roomName,
+            width: '100%',
+            height: '100%',
+            parentNode: document.querySelector('#meetContainer'),
+            lang: 'ar',
+            interfaceConfigOverwrite: {
+                SHOW_JITSI_WATERMARK: false,
+                SHOW_WATERMARK_FOR_GUEST: false,
+                TOOLBAR_BUTTONS: [
+                    'microphone', 'camera', 'closedcaptions', 'desktop',
+                    'fullscreen', 'fodeviceselection', 'hangup', 'chat',
+                    'raisehand', 'videoquality', 'tileview'
+                ]
+            },
+            configOverwrite: {
+                startWithAudioMuted: false,
+                startWithVideoMuted: false,
+                prejoinPageEnabled: false
+            }
+        };
+
+        new JitsiMeetExternalAPI(domain, options);
+    };
+</script>
+
+</body>
+</html>
